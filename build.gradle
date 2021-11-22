@@ -1,23 +1,20 @@
 plugins {
-    id 'com.gradle.build-scan' version '2.0.2'
-    id "com.gradle.plugin-publish" version "0.9.4"
-    id "com.jfrog.bintray" version "1.6"
-}
-apply plugin: 'groovy'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
-apply plugin: 'jacoco'
-apply plugin: 'project-report'
+    id "com.gradle.plugin-publish" version "0.18.0"
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+    id "groovy"
+    id "maven-publish"
+    id "signing"
+    id "project-report"
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 defaultTasks 'clean', 'build'
 
-version = '2.14.1'
-group = 'com.eriwen'
-ext.archivesBaseName = 'gradle-js-plugin'
+version = '3.0.0'
+group = 'com.magnetichq'
+ext.archivesBaseName = 'gradle-7-js-plugin'
 ext.isSnapshot = version.endsWith("-SNAPSHOT")
 
 buildScan {
@@ -42,20 +39,21 @@ task createClasspathManifest {
 }
 
 dependencies {
-    compile gradleApi()
-    compile('com.google.javascript:closure-compiler:v20160208') {
+    implementation gradleApi()
+    implementation('com.google.javascript:closure-compiler:v20160208') {
         exclude module: 'junit'
     }
-    compile('io.jdev.html2js:html2js:0.1') {
+    implementation('io.jdev.html2js:html2js:0.1') {
         exclude module: 'groovy-all'
     }
-    testCompile gradleTestKit()
-    testCompile files(createClasspathManifest)
-    testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
+    testImplementation gradleTestKit()
+    testImplementation files(createClasspathManifest)
+    testImplementation('org.spockframework:spock-core:2.0-groovy-3.0') {
         exclude module: 'junit-dep'
         exclude module: 'groovy-all'
     }
-    testCompile 'commons-lang:commons-lang:2.6'
+    testImplementation 'commons-lang:commons-lang:2.6'
+    testImplementation 'junit:junit:4.13'
 }
 
 compileGroovy {
@@ -99,38 +97,25 @@ publishing {
 }
 
 pluginBundle {
-    website = 'https://github.com/eriwen/gradle-js-plugin/'
-    vcsUrl = 'https://github.com/eriwen/gradle-js-plugin/'
-    description = 'Gradle plugin for working with JS'
+    website = 'https://github.com/piper-magnetic/gradle-js-plugin/'
+    vcsUrl = 'https://github.com/piper-magnetic/gradle-js-plugin/'
+    description = 'Gradle 7.0 plugin for working with JS'
     tags = ['javascript', 'jshint', 'requirejs']
 
     plugins {
         jsPlugin {
-            id = 'com.eriwen.gradle.js'
-            displayName = 'Gradle JavaScript Plugin'
+            id = 'com.magnetichq.gradle.js'
+            displayName = 'Gradle7 JavaScript Plugin'
         }
     }
     mavenCoordinates {
-        groupId = 'com.eriwen'
-        artifactId = 'gradle-js-plugin'
+        groupId = 'com.magnetichq'
+        artifactId = 'gradle-7-js-plugin'
     }
 }
 
 signing {
     sign configurations.archives
-}
-
-bintray {
-    user = System.properties['bintrayUsername']
-    key = System.properties['bintrayApiKey']
-    publications = ['maven']
-    pkg {
-        repo = 'gradle-plugins'
-        name = 'gradle-js-plugin'
-        desc = 'Gradle plugin for working with JS.'
-        licenses = ['Apache-2.0']
-        labels = ['gradle', 'js']
-    }
 }
 
 test {
@@ -142,65 +127,10 @@ test {
     }
 }
 
-jacoco {
-    toolVersion = "0.7.6.201602180812"
-    reportsDir = file("$buildDir/customJacocoReportDir")
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled false
-        csv.enabled false
-        html.destination file("${buildDir}/jacocoHtml")
-    }
-}
-
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            element = 'PACKAGE'
-            includes = ['com.eriwen.gradle.*']
-
-            limit {
-                counter = 'LINE'
-                value = 'COVEREDRATIO'
-                minimum = 0.6
-            }
-            limit {
-                counter = 'CLASS'
-                value = 'MISSEDCOUNT'
-                maximum = 0
-            }
-        }
-    }
-}
-
 // Only *require* signing if we are uploading a non snapshot version
 gradle.taskGraph.whenReady { taskGraph ->
     tasks.withType(org.gradle.plugins.signing.Sign).all {
         required = taskGraph.hasTask(":uploadArchives") && !isSnapshot
-    }
-}
-
-install.repositories.mavenInstaller {
-    pom.project(pomConfiguration)
-    if (signing.signatory) {
-        beforeDeployment { signing.signPom(it) }
-    }
-}
-
-uploadArchives {
-    repositories.mavenDeployer {
-        if (signing.signatory) {
-            beforeDeployment { signing.signPom(it) }
-        }
-        name = 'mavenCentralReleaseDeployer'
-        repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-            authentication(userName: System.properties['mavenCentralUsername'], password: System.properties['mavenCentralPassword'])
-            releases(updatePolicy: 'always')
-            snapshots(updatePolicy: 'always')
-        }
-        pom.project(pomConfiguration)
     }
 }
 
@@ -209,10 +139,10 @@ uploadArchives {
  */
 def getPomConfiguration() {
     return {
-        name 'Gradle JS Plugin'
+        name 'Gradle7.0 JS Plugin'
         packaging 'jar'
-        description 'A Gradle plugin for working with JS.'
-        url 'https://github.com/eriwen/gradle-js-plugin'
+        description 'A Gradle plugin for working with JS, upgraded for 7.0.'
+        url 'https://github.com/piper-magnetic/gradle-js-plugin'
         licenses {
             license {
                 name 'The Apache Software License, Version 2.0'
@@ -222,15 +152,15 @@ def getPomConfiguration() {
         }
         developers {
             developer {
-                id 'eriwen'
-                name 'Eric Wendelin'
-                email 'me@eriwen.com'
+                id 'piper-magnetic'
+                name 'Piper Horscroft'
+                email 'david@magnetichq.com'
             }
         }
         scm {
-            connection 'scm:https://eriwen@github.com/eriwen/gradle-js-plugin'
-            developerConnection 'scm:git@github.com:eriwen/gradle-js-plugin.git'
-            url 'https://github.com/eriwen/gradle-js-plugin'
+            connection 'scm:https://piper-magnetic@github.com/piper-magnetic/gradle-js-plugin'
+            developerConnection 'scm:git@github.com:piper-magnetic/gradle-js-plugin.git'
+            url 'https://github.com/piper-magnetic/gradle-js-plugin'
         }
     }
 }

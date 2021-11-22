@@ -20,7 +20,7 @@ public class DefaultJavaScriptProcessingChain extends DefaultNamedDomainObjectLi
     private final Project project;
 
     public DefaultJavaScriptProcessingChain(Project project, DefaultJavaScriptSourceSet source, Instantiator instantiator) {
-        super(SourceTask.class, instantiator, new Task.Namer());
+        super(SourceTask.class, instantiator, new Task.Namer(), null);
         this.source = source;
         this.project = project;
         wireChain();
