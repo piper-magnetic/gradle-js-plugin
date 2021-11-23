@@ -1,5 +1,5 @@
-# Gradle Javascript Plugin! [![Build Status](https://secure.travis-ci.org/eriwen/gradle-js-plugin.png)](http://travis-ci.org/eriwen/gradle-js-plugin)
-Aiming to be the *simplest* way to manage your JavaScript in a build.
+# Gradle 7.x Javascript Plugin!
+This project is split off from eriwen's [Gradle JS Plugin](https://github.com/eriwen/gradle-js-plugin). The original seems unmaintained for later versions of Gradle, and the goal is effectively to leave its functionality as untouched as possible for now while getting it to build and run on Gradle 7 and up.
 
 # Quick Start
 Wrangling your JS in a [Gradle](https://gradle.org) build is easy! Just add this to your *build.gradle* file:
@@ -7,24 +7,9 @@ Wrangling your JS in a [Gradle](https://gradle.org) build is easy! Just add this
 ### Gradle 2.1+
 ```groovy
 plugins {
-  id "com.eriwen.gradle.js" version "2.14.1"
+  id "com.magnetichq.gradle.js" version "3.0.0"
 }
 ```
-
-### Gradle 2.0-
-```groovy
-buildscript {
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath "com.eriwen:gradle-js-plugin:1.12.1"
-  }
-}
-
-apply plugin: "com.eriwen.gradle.js"
-```
-
 
 ```groovy
 // Declare your sources
