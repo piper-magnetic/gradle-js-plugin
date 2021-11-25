@@ -4,10 +4,9 @@ This project is split off from eriwen's [Gradle JS Plugin](https://github.com/er
 # Quick Start
 Wrangling your JS in a [Gradle](https://gradle.org) build is easy! Just add this to your *build.gradle* file:
 
-### Gradle 2.1+
 ```groovy
 plugins {
-  id "com.magnetichq.gradle.js" version "3.0.0"
+  id "com.magnetichq.gradle.js" version "3.0.2"
 }
 ```
 
