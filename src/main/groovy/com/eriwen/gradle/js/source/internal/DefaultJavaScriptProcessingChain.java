@@ -10,6 +10,7 @@ import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.DefaultNamedDomainObjectList;
 import org.gradle.api.tasks.SourceTask;
 import org.gradle.internal.reflect.Instantiator;
+import org.gradle.api.internal.CollectionCallbackActionDecorator;
 
 import java.util.Collections;
 import java.util.concurrent.Callable;
@@ -19,8 +20,9 @@ public class DefaultJavaScriptProcessingChain extends DefaultNamedDomainObjectLi
     private final DefaultJavaScriptSourceSet source;
     private final Project project;
 
-    public DefaultJavaScriptProcessingChain(Project project, DefaultJavaScriptSourceSet source, Instantiator instantiator) {
-        super(SourceTask.class, instantiator, new Task.Namer(), null);
+    public DefaultJavaScriptProcessingChain(Project project, DefaultJavaScriptSourceSet source, Instantiator instantiator,
+            CollectionCallbackActionDecorator decorator) {
+        super(SourceTask.class, instantiator, new Task.Namer(), decorator);
         this.source = source;
         this.project = project;
         wireChain();

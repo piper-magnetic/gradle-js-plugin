@@ -8,3 +8,7 @@ out/
 .idea/
 intellij
 gradle.properties
+.classpath
+bin
+.settings/
+.project
