@@ -12,7 +12,7 @@ targetCompatibility = 1.8
 
 defaultTasks 'clean', 'build'
 
-version = '3.2.2'
+version = '3.3.0'
 group = 'com.magnetichq'
 ext.archivesBaseName = 'gradle-7-js-plugin'
 ext.isSnapshot = version.endsWith("-SNAPSHOT")
@@ -125,7 +125,7 @@ test {
         events 'passed', 'skipped', 'failed'
         exceptionFormat = 'full'
     }
-    //useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 // Only *require* signing if we are uploading a non snapshot version

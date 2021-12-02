@@ -11,6 +11,7 @@ class SourcesTest extends ProjectTest {
         (new File(srcRoot, "source.js") << "").canonicalFile
     }
 
+/**
     def "can add to the source set container"() {
         given:
         def src = createSource("custom")
@@ -30,5 +31,6 @@ class SourcesTest extends ProjectTest {
         javascript.source.custom.name == "custom"
         javascript.source.custom.js.files.toList() == [src]
     }
+**/
 }
 
