@@ -14,6 +14,7 @@ abstract class FunctionalSpec extends Specification {
     File buildFile
 
     def setup() {
+        tempProjectDir.create()
         projectDir = tempProjectDir.root
         buildFile = tempProjectDir.newFile('build.gradle')
 

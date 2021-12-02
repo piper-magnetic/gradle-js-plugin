@@ -16,6 +16,7 @@ class JsHintTaskTest extends Specification {
     def dest
 
     def setup() {
+        dir.create()
         project.apply(plugin: JsPlugin)
         project.repositories.mavenCentral()
         task = project.tasks.jshint
@@ -52,6 +53,7 @@ class JsHintTaskTest extends Specification {
     def "build fails with invalid files"() {
         given:
         task.ignoreExitCode = false
+        project.jshint.options = [asi: "true"]
         addValidFile()
         addInvalidFile()
 
@@ -92,37 +94,9 @@ class JsHintTaskTest extends Specification {
         notThrown ExecException
     }
 
-    def "does not generate checkstyle report when disabled"() {
-        given:
-        task.reporter = ''
-        addFile("invalid.js", "var b = 5")
-
-        when:
-        task.run()
-
-        then:
-        def contents = new File(dest as String).text
-        assert ! (contents =~ "<checkstyle")
-    }
-
-    def "generates checkstyle report when enabled"() {
-        given:
-        task.reporter = 'checkstyle'
-        addFile("invalid.js", "var b = 5")
-
-        when:
-        task.run()
-
-        then:
-        def contents = new File(dest as String).text
-        assert contents =~ "<checkstyle"
-    }
-   
-
     def "fails without predef option to jshint"() {
         given:
         task.ignoreExitCode = false
-        task.reporter = 'checkstyle'
         project.jshint.options = [ undef: "true" ]
         project.jshint.predef = [ someGlobalTwo: 5 ]
         addFile("invalidWithGlobal.js", "var b = someGlobal;")
@@ -137,10 +111,37 @@ class JsHintTaskTest extends Specification {
     def "passes with predef option to jshint"() {
         given:
         task.ignoreExitCode = false
-        task.reporter = 'checkstyle'
         project.jshint.options = [ undef: "true" ]
         project.jshint.predef = [ someGlobal: 5 ]
         addFile("validWithGlobal.js", "var b = someGlobal;")
+
+        when:
+        task.run()
+
+        then:
+        notThrown ExecException
+    }
+
+
+    def "fails without ES6 option and template literals"() {
+        given:
+        task.ignoreExitCode = false
+        project.jshint.options = [ undef: "true", "esversion": 3]
+        project.jshint.predef = [ someGlobalTwo: 5 ]
+        addFile("invalidLiterals.js", "let b = `test`;")
+
+        when:
+        task.run()
+
+        then:
+        thrown ExecException
+    }
+
+    def "passes with ES6 option and template literals"() {
+        given:
+        task.ignoreExitCode = false
+        project.jshint.options = [ undef: "true", "esversion": 6 ]
+        addFile("validLiterals.js", "let b = `test`;")
 
         when:
         task.run()
@@ -155,7 +156,7 @@ class JsHintTaskTest extends Specification {
 
     def addInvalidFile() {
         // no semicolon, jshint should fail
-        addFile("invalid.js", "var a = 5")
+        addFile("invalid.js", "var adfdesf9()0009)000(;ldfsd9f) = 5")
     }
 
     def addFile(name,contents) {
