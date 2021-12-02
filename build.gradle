@@ -12,7 +12,7 @@ targetCompatibility = 1.8
 
 defaultTasks 'clean', 'build'
 
-version = '3.1.0'
+version = '3.1.1'
 group = 'com.magnetichq'
 ext.archivesBaseName = 'gradle-7-js-plugin'
 ext.isSnapshot = version.endsWith("-SNAPSHOT")
