@@ -63,5 +63,12 @@ class JsPlugin implements Plugin<Project> {
     }
 
     void configureDependencies(final Project project) {
+        project.configurations {
+            rhino
+        }
+        project.dependencies {
+            rhino 'org.mozilla:rhino:1.7.13'
+        }
+        // TODO: have 'check' depend on jshint
     }
 }

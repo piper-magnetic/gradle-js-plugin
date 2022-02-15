@@ -32069,8 +32069,6 @@ if (typeof exports === 'object' && exports) exports.JSHINT = JSHINT;
 (function (args) {
   "use strict";
 
-  print(args);
-
   var filenames = [];
   var flags = {};
   var optstr; // arg1=val1,arg2=val2,...
@@ -32133,7 +32131,6 @@ if (typeof exports === 'object' && exports) exports.JSHINT = JSHINT;
   }
 
   if (optstr) {
-    print("OPT + " + optstr)
     var optarr = optstr.split(",");
 
     for (var p = 0; p < optarr.length; p++) {
@@ -32186,6 +32183,5 @@ if (typeof exports === 'object' && exports) exports.JSHINT = JSHINT;
     }
   });
 
-  print("Returning " + retval);
   return retval;
 }(arguments));
