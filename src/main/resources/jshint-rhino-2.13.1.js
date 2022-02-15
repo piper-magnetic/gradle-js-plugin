@@ -1,4 +1,3 @@
-#!/usr/bin/env rhino
 var window = {};
 /*! 2.13.1 */
 var JSHINT;
@@ -32070,6 +32069,8 @@ if (typeof exports === 'object' && exports) exports.JSHINT = JSHINT;
 (function (args) {
   "use strict";
 
+  print(args);
+
   var filenames = [];
   var flags = {};
   var optstr; // arg1=val1,arg2=val2,...
@@ -32128,7 +32129,11 @@ if (typeof exports === 'object' && exports) exports.JSHINT = JSHINT;
   }
 
   if (optstr) {
-    optstr.split(",").forEach(function (arg) {
+    print("OPT + " + optstr)
+    var optarr = optstr.split(",");
+
+    for (var p = 0; p < optarr.length; p++) {
+      var arg = optarr[p];
       var o = arg.split("=");
       if (o[0] === "indent") {
         opts[o[0]] = parseInt(o[1], 10);
@@ -32144,21 +32149,23 @@ if (typeof exports === 'object' && exports) exports.JSHINT = JSHINT;
           }
         }(o[1]));
       }
-    });
+    }
   }
 
   globals = opts.globals || {};
   delete(opts.globals);
 
   if (predef) {
-    predef.split(",").forEach(function (arg) {
+    var predefarr = predef.split(",");
+    for (var p = 0; p < predefarr.length; p++) { 
+      var arg = predefarr[p];
       var global = arg.split("=");
       globals[global[0]] = global[1] === "true" ? true : false;
-    });
+    };
   }
 
   filenames.forEach(function (name) {
-    var input = readFile(name);
+    var input = readFully(name);
 
     if (!input) {
       print("jshint: Couldn't open file " + name);
@@ -32175,5 +32182,6 @@ if (typeof exports === 'object' && exports) exports.JSHINT = JSHINT;
     }
   });
 
-  quit(retval);
+  print("Returning " + retval);
+  return retval;
 }(arguments));

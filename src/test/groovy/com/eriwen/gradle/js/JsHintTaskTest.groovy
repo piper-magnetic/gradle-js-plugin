@@ -141,6 +141,7 @@ class JsHintTaskTest extends Specification {
     def "passes with ES6 option and template literals"() {
         given:
         task.ignoreExitCode = false
+        task.outputToStdOut = true
         project.jshint.options = [ undef: "true", "esversion": 6 ]
         addFile("validLiterals.js", "let b = `test`;")
 
