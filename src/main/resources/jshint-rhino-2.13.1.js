@@ -32080,6 +32080,10 @@ if (typeof exports === 'object' && exports) exports.JSHINT = JSHINT;
   var retval = 0;
 
   args.forEach(function (arg) {
+    if (typeof arg === "object") {
+      arg = arg.toString();
+    }
+
     if (arg.indexOf("--") === 0) {
       // Configuration Flags might be boolean or will be split into name and value
       if (arg.indexOf("=") > -1) {
