@@ -40,7 +40,7 @@ task createClasspathManifest {
 
 dependencies {
     implementation gradleApi()
-    implementation('com.google.javascript:closure-compiler:v20160208') {
+    implementation('com.google.javascript:closure-compiler:v20220803') {
         exclude module: 'junit'
     }
     implementation('io.jdev.html2js:html2js:0.1') {
@@ -53,7 +53,7 @@ dependencies {
         exclude module: 'groovy-all'
     }
     testImplementation 'commons-lang:commons-lang:2.6'
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 compileGroovy {
